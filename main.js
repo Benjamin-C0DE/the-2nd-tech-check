@@ -9,6 +9,11 @@
     var codons = [];
 
     // TODO: ADD CODE TO COMPLETE THE FUNCTION HERE...
+
+    for (var i = 0; i < dnaSequence.length; i += 3) {
+      codons.push(dnaSequence.substring(i, i + 3));
+    }
+
     // you'll get an error notification in the console until the function is completed correctly
 
     return codons;
@@ -21,6 +26,17 @@
     var aminos = [];
     
     // TODO: ADD CODE TO COMPLETE THE FUNCTION HERE...
+
+    codons.forEach(function(codon){
+      // Search for the amino acid object that contains this codon
+      var match = jsonData.find(function(amino){
+        return amino.codons.includes(codon);
+      });
+      if (match) {
+        aminos.push(match.abbr);
+      }
+    });    
+
     // you'll get an error notification in the console until the function is completed correctly
     
     return aminos;
@@ -32,14 +48,21 @@
     
 
     // TODO: ENTER CODE TO LOAD DATA FROM API HERE.
+    
+    fetch(DATA_URL)
+      .then(response => response.json())
+      .then(json => {
+        aminos = translateCodonsToAminos(codons, json); //DO NOT MODIFY...but you can uncomment and move when ready
 
+        tests.runTests(codons, aminos) //DO NOT MODIFY...but you can move when ready
+      });
 
     //ONCE YOU HAVE YOUR API CALL WORKING, UNCOMMENT THE LINE ABOVE THE runTests line AND APPLY 
     //BOTH LINES (including the test line) WITHIN THE CODE ABOVE WHERE YOU RECEIVE YOUR JSON DATA FROM YOUR API CALL...
     //DO NOT MODIFY THE LINES EXCEPT FOR UNCOMMENTING THEM AND MOVING THEM TO THE CORRECT LOCATION ABOVE IN CODE
 
     //aminos = translateCodonsToAminos(codons, json); //DO NOT MODIFY...but you can uncomment and move when ready
-    tests.runTests(codons, aminos) //DO NOT MODIFY...but you can move when ready
+    //tests.runTests(codons, aminos) //DO NOT MODIFY...but you can move when ready
   }
 
   runProgram(); // DO NOT MODIFY
